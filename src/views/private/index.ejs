@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Head -->
+  <%- include("./components/Head") %>
+  <!--  -->
+  <body>
+    <!-- Alert -->
+    <%- include("../components/Alert") %>
+
+    <!-- Loading -->
+    <%- include("../components/Loading") %>
+
+    <!-- Header -->
+    <%- include("./components/Header") %>
+
+    <!-- Main -->
+    <div class="admin__flix flex_center">
+      <%- include("./components/NavBar") %>
+      <!--  -->
+      <% if (page) { %>
+      <!--  -->
+      <%- include(page) %>
+      <!--  -->
+      <% } %>
+      <!--  -->
+      <!--  -->
+    </div>
+  </body>
+  <script src="/handle/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+</html>

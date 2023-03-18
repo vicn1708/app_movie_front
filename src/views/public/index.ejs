@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser</title>
+    <link href="/styles/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <!-- Loading -->
+    <%- include("../components/Loading") %>
+    <!--  -->
+    <div
+      class="relative w-full h-[100vh] bg-black flex flex-col justify-center items-center"
+    >
+      <button
+        class="absolute top-8 right-20 bg-white rounded-md px-4 py-2 text-md border-2 hover:bg-black hover:text-white transition"
+      >
+        Log out
+      </button>
+      <h1 class="text-white text-6xl mb-20">Ai đang xem?</h1>
+      <div class="w-max h-[14rem] flex justify-center items-center gap-8">
+        <div class="relative h-full w-[14rem] cursor-pointer">
+          <img
+            src="https://i.pinimg.com/236x/25/9e/b1/259eb1879889f6605b4b257e2d934247.jpg"
+            alt="Profile"
+            class="w-full h-full object-cover rounded-xl border-4 border-transparent hover:border-white transition"
+          />
+          <span
+            class="absolute w-max text-white text-3xl left-[50%] bottom-[-3rem] transform translate-x-[-50%]"
+            >Chung di</span
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

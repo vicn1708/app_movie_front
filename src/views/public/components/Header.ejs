@@ -1,0 +1,62 @@
+<header class="browser-header">
+  <ul class="nav-browser">
+    <li class="h-8">
+      <img
+        src="/images/logo.png"
+        alt="logo"
+        class="h-full w-full object-cover"
+      />
+    </li>
+    <li><a href="/browser">Trang chủ</a></li>
+    <li><a href="#">Phim T.hình</a></li>
+    <li><a href="#">Mới & phổ biến</a></li>
+    <li><a href="/favorite">Danh sách của tôi</a></li>
+  </ul>
+  <div class="icon-right-browser">
+    <div class="search-browser">
+      <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+    </div>
+    <div class="notification-browser">
+      <a href="#"><i class="fa-regular fa-bell"></i></a>
+    </div>
+    <div class="avatar-user-browser">
+      <img
+        src="https://i.pinimg.com/236x/60/76/bb/6076bb61f1dae23ef08b68c123268cb6.jpg"
+        alt="avatar"
+      />
+      <ul class="user-option-dropdown">
+        <li class="changeUser">
+          <form action="./changeUser" method="post">
+            <input type="text" hidden name="ur_avatar" value="<%=
+            "element.ur_avatar" %>" /> <input type="text" hidden name="ur_name"
+            value="<%= "element.ur_name" %>" />
+            <div class="img-otherUser">
+              <img src="<%= "element.ur_avatar" %>" alt="<%= "element.ur_name"
+              %>" />
+            </div>
+            <span><%= "element.ur_name" %></span>
+          </form>
+        </li>
+        <li>
+          <a href="/profile"><i class="fa-regular fa-user"></i>Profile</a>
+        </li>
+        <li>
+          <a href="/logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i>Log out</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+<script>
+  //* scroll header
+  window.addEventListener("scroll", () => {
+    const header = document.querySelector(".browser-header");
+    if (window.scrollY > 0) {
+      header.classList.add("scrollHeader");
+    } else {
+      header.classList.remove("scrollHeader");
+    }
+  });
+</script>

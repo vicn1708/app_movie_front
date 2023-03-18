@@ -1,0 +1,22 @@
+<div class="wrapper-slide-list-film">
+  <div class="title-list-film">
+    <span><%= "title" %></span>
+  </div>
+  <div class="wrapper-list-film" id="wrapper-list-film">
+    <div class="list-film-browser">
+      <% for( let index = 0; index < 10; index++ ) { %>
+      <div class="film-browser">
+        <img src="/images/poster.jpg" alt="film" onclick="getDetailFilm(this)"
+        data-id="<%= "film.id" %>" data-iframe="<%= "film.f_trailer" %>"
+        data-desc="<%= "film.f_description" %>" />
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <div class="list-slide-film-prev">
+    <i class="fa-solid fa-chevron-left"></i>
+  </div>
+  <div class="list-slide-film-next">
+    <i class="fa-solid fa-chevron-right"></i>
+  </div>
+</div>

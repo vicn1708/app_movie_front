@@ -1,0 +1,112 @@
+<div class="main__content">
+  <div class="main__content_head flex_center">
+    <!-- <a href="" class="add_content"
+        ><i class="bi bi-plus-circle"></i> <span>Thêm mới thể loại</span></a
+      > -->
+    <a href="./create-movie" class="add_content"
+      ><i class="bi bi-plus-circle"></i> <span>Thêm dự án</span></a
+    >
+    <!-- <a href="" class="add_content"
+        ><i class="bi bi-plus-circle"></i> <span>Thêm mới thể loại</span></a
+      > -->
+  </div>
+  <div class="main__content_body">
+    <div class="tbl-header">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th class="">#</th>
+            <th>Banner</th>
+            <th>Thể loại</th>
+            <th class="title4">Tên phim</th>
+            <th>Lượt xem</th>
+            <th>Chi tiết</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="tbl-content">
+      <table cellpadding="0" border="0">
+        <tbody>
+          <% movies.forEach((element, index) => { %>
+          <tr>
+            <td class=""><%= index + 1 %></td>
+            <td>
+              <img
+                class="thumb-film"
+                src="<%= element.banner[0].uri %>"
+                alt="banner"
+              />
+            </td>
+            <td>
+              <!--  -->
+              <% element.categories.forEach(category => { %>
+              <p class="mr-4"><%= category.name %></p>
+              <% }) %>
+              <!--  -->
+            </td>
+            <td class="title4">
+              <p><%= element.title %></p>
+            </td>
+            <td><%= element.rating.views %></td>
+            <td class="flex justify-center items-center w-max">
+              <a
+                class="details-film mr-3"
+                href="/admin/movie/detail/<%= element._id %>"
+                ><i class="bi bi-info-circle px-2"></i
+              ></a>
+
+              <!-- Button trigger modal -->
+              <button
+                type="button"
+                class="inline-block rounded bg-danger px-6 pt-2.5 pb-3 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
+                data-te-toggle="modal"
+                data-te-target="#staticBackdrop-<%= index %>"
+                data-te-ripple-init
+                data-te-ripple-color="light"
+              >
+                Xóa
+              </button>
+
+              <!-- Modal -->
+              <%- include("./components/Modal", {title: element.title, index,
+              id: element._id}) %>
+              <!--  -->
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  const deleteMovie = async (btn, id) => {
+    const content = btn.parentElement.parentElement.children[1];
+    content.innerHTML = `
+      <div
+        class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-danger motion-reduce:animate-[spin_1.5s_linear_infinite]"
+        role="status">
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+    `;
+
+    const result = await fetch(
+      `http://localhost:3000/admin/movie/delete/${id}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return location.reload();
+        }
+      })
+      .catch((err) => console.log(err));
+
+    return result;
+  };
+</script>
