@@ -12,7 +12,9 @@
     <div class="h-[20vh]"></div>
 
     <!-- List slide -->
-    <div class="h-[100vh] w-full"><%- include("./components/Slide") %></div>
+    <div class="h-[100vh] w-full">
+      <%- include("./components/Slide", {title: "Danh sách của tôi", movies}) %>
+    </div>
 
     <!-- Detail film -->
     <%- include("./components/DetailClass") %>

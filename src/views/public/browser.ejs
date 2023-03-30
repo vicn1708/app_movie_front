@@ -8,17 +8,18 @@
     <%- include('../components/Loading') %>
 
     <!-- Header -->
-    <%- include('./components/Header') %>
+    <%- include('./components/Header', {users}) %>
 
     <!-- Banner -->
-    <%- include("./components/Banner") %>
+    <%- include("./components/Banner", {movieBanner}) %>
 
     <!-- Slide -->
-    <% for( let index = 0; index < 5; index++ ) { %>
+    <% moviesByCategory.forEach(item => { %>
     <!--  -->
-    <%- include("./components/Slide") %>
+    <%- include("./components/Slide", {title: item.category, movies:
+    item.movies}) %>
     <!--  -->
-    <% } %>
+    <% }) %>
 
     <!-- Detail film -->
     <%- include("./components/DetailClass") %>

@@ -2,5 +2,5 @@ import { AuthService } from "../services/auth/auth.service";
 
 export const AuthController = {
   loginPage: AuthService.loginPage,
-  loginHandle: AuthService.loginHandle,
+  logOut: AuthService.logOut,
 };

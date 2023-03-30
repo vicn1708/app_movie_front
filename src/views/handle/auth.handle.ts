@@ -10,8 +10,8 @@ const fetchPostOption = (data: Account) => {
     headers: {
       "Content-Type": "application/json",
     },
-    mode: "cors",
-    keepalive: true,
+    // mode: "cors",
+    // keepalive: true,
     body: JSON.stringify(data),
   };
 };
@@ -71,12 +71,29 @@ btnLogin.addEventListener("click", async () => {
     };
 
     const account = await fetch(
-      `${process.env.DOMAIN_API}/auth/register`,
+      `http://localhost:3000/auth/register`,
       fetchRegisterOption
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
+        const accessToken = data.access_token;
+        const refreshToken = data.refresh_token;
+
+        if (!accessToken && !refreshToken) {
+          return console.log(data);
+        }
+
+        const setTime10p = new Date(
+          new Date().getTime() + 60 * 10
+        ).toUTCString();
+        const setTime30d = new Date(
+          new Date().getTime() + 60 * 60 * 24 * 30 * 1000
+        ).toUTCString();
+
+        document.cookie = `accessToken=${accessToken}; expires=${setTime10p}`;
+        document.cookie = `refreshToken=${refreshToken}; expires=${setTime30d}`;
+
+        location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -96,12 +113,29 @@ btnLogin.addEventListener("click", async () => {
     };
 
     const user = await fetch(
-      `${process.env.DOMAIN_API}/auth/login`,
+      `http://localhost:3000/auth/login`,
       fetchLoginOption
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
+        if (data.status) {
+          return console.log(data);
+        }
+
+        const accessToken = data.access_token;
+        const refreshToken = data.refresh_token;
+
+        const setTime1h = new Date(
+          new Date().getTime() + 60 * 60 * 1000
+        ).toUTCString();
+        const setTime30d = new Date(
+          new Date().getTime() + 60 * 60 * 24 * 30 * 1000
+        ).toUTCString();
+
+        document.cookie = `accessToken=${accessToken}; expires=${setTime1h}`;
+        document.cookie = `refreshToken=${refreshToken}; expires=${setTime30d}`;
+
+        location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);

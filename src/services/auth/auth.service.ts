@@ -27,5 +27,9 @@ export const AuthService = {
     return res.render("public/auth", { props });
   },
 
-  loginHandle(req: Request, res: Response) {},
+  logOut(req: Request, res: Response) {
+    res.clearCookie("refreshToken");
+
+    return res.redirect("/login");
+  },
 };

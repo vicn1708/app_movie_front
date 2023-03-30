@@ -35,20 +35,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-var mountAlert = function () {
+var mountAlert = function (id) {
     var alert = document.querySelector("#alert");
     if (alert.style.display === "block") {
         setTimeout(function () {
             alert.style.animation = "unMountAlert 0.75s forwards";
             setTimeout(function () {
                 alert.style.display = "none";
+                location.href = "/admin/movie/detail/".concat(id);
             }, 1000);
         }, 3000);
     }
 };
 var formCreateMovie = document.querySelector("#my__form_film");
 formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this, void 0, void 0, function () {
-    var category, title, cast, character, genre, trailer, description, poster, banner, categoryValue, titleValue, castValue, characterValue, genreValue, trailerValue, descriptionValue, posterValue, bannerValue, data, formDate, btnCreateMovie;
+    var category, title, cast, character, genre, description, trailer, poster, banner, categoryValue, titleValue, castValue, characterValue, genreValue, descriptionValue, trailerValue, posterValue, bannerValue, data, formDate, btnCreateMovie;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -58,8 +59,8 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                 cast = document.querySelector("#cast");
                 character = document.querySelector("#character");
                 genre = document.querySelector("#genre");
-                trailer = document.querySelector("#trailer");
                 description = document.querySelector("#description");
+                trailer = document.querySelector("#trailer");
                 poster = document.querySelector("#poster_img");
                 banner = document.querySelector("#banner_img");
                 categoryValue = [];
@@ -68,11 +69,13 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                 castValue = cast.value;
                 characterValue = character.value;
                 genreValue = genre.value;
-                trailerValue = trailer.value;
                 descriptionValue = description.value;
+                trailerValue = trailer.files[0];
                 posterValue = poster.files[0];
                 bannerValue = banner.files[0];
-                if (posterValue == undefined || bannerValue == undefined) {
+                if (posterValue == undefined ||
+                    bannerValue == undefined ||
+                    trailerValue == undefined) {
                     return [2 /*return*/, alert("file missing")];
                 }
                 if (categoryValue.length < 1 ||
@@ -80,7 +83,6 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                     castValue == "" ||
                     characterValue == "" ||
                     genreValue == "" ||
-                    trailerValue == "" ||
                     descriptionValue == "") {
                     return [2 /*return*/, alert("field missing")];
                 }
@@ -90,17 +92,16 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                     casts: castValue.split(",").map(function (item) { return item.trim(); }),
                     characters: characterValue.split(",").map(function (item) { return item.trim(); }),
                     genres: genreValue.split(",").map(function (item) { return item.trim(); }),
-                    trailer: trailerValue,
                     description: descriptionValue
                 };
-                console.log(data);
                 formDate = new FormData();
                 formDate.append("data", JSON.stringify(data));
+                formDate.append("trailer", trailerValue);
                 formDate.append("poster", posterValue);
                 formDate.append("banner", bannerValue);
                 btnCreateMovie = document.querySelector("#btn-create-movie");
                 btnCreateMovie.innerHTML = "<img src=\"/images/btn-loading.svg\" alt=\"btn-loading\" class=\"w-max m-auto\"/>";
-                return [4 /*yield*/, fetch("http://localhost:3000/admin/movie/create", {
+                return [4 /*yield*/, fetch("http://localhost:3000/movies/create", {
                         method: "POST",
                         mode: "cors",
                         body: formDate
@@ -111,7 +112,6 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                             btnCreateMovie.innerHTML = "Hoàn tất";
                             var alert_1 = document.querySelector("#alert");
                             alert_1.style.display = "block";
-                            mountAlert();
                             return res.json();
                         }
                         else {
@@ -120,7 +120,9 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                             return res.json();
                         }
                     })
-                        .then(function (data) { return console.log(data); })["catch"](function (error) {
+                        .then(function (data) {
+                        mountAlert(data.movie._id);
+                    })["catch"](function (error) {
                         console.error("Error uploading image:", error);
                     })];
             case 1:

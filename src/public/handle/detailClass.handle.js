@@ -1,34 +1,41 @@
-const getDetailFilm = (img) => {
+const getDetailFilm = async (img) => {
   document.querySelector(".wrapper-filter-detail-film").style.visibility =
     "visible";
   document.querySelector(".wrapper-filter-detail-film").style.opacity = 1;
 
-  // const f_id = img.getAttribute("data-id");
-  // const f_trailer = img.getAttribute("data-iframe");
-  // const f_description = img.getAttribute("data-desc");
-  // console.log(f_id, f_trailer, f_description);
+  const movieId = img.getAttribute("data-id");
 
-  document.querySelector(
-    ".video-detail-film iframe"
-  ).src = `https://www.youtube.com/embed/oO68gfo1TKk?autoplay=1`;
+  await fetch(`http://localhost:3000/movies/detail/${movieId}`)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((data) => {
+      document.querySelector(".loadingClassFilter").style.display = "none";
+      document.querySelector(".block-detail-film").style.display = "block";
+      document.querySelector("#sourceMovie").src = data.video.trailer;
+      document.querySelector(".description-detail-film").innerHTML =
+        data.description;
 
-  // document.querySelector(".description-detail-film").innerHTML = f_description;
-
-  // if (document.getElementById("removeFavorite")) {
-  //   document.querySelector(
-  //     ".list-btn-detail-film"
-  //   ).children[1].href = `/removeYourFavorite/${f_id}`;
-  // } else {
-  //   document.querySelector(
-  //     ".list-btn-detail-film"
-  //   ).children[1].href = `/addYourFavorite/${f_id}`;
-  // }
+      // if (document.getElementById("removeFavorite")) {
+      //   document.querySelector(
+      //     ".list-btn-detail-film"
+      //   ).children[1].href = `/removeYourFavorite/${f_id}`;
+      // } else {
+      //   document.querySelector(
+      //     ".list-btn-detail-film"
+      //   ).children[1].href = `/addYourFavorite/${f_id}`;
+      // }
+    });
 };
 
 document.querySelector(".filter-detail-film").addEventListener("click", () => {
   document.querySelector(".wrapper-filter-detail-film").style.visibility =
     "hidden";
   document.querySelector(".wrapper-filter-detail-film").style.opacity = 0;
-
-  document.querySelector(".video-detail-film iframe").src = "";
+  document.querySelector("#sourceMovie").src = "";
+  document.querySelector(".description-detail-film").innerHTML = "";
+  document.querySelector(".block-detail-film").style.display = "none";
+  document.querySelector(".loadingClassFilter").style.display = "grid";
 });

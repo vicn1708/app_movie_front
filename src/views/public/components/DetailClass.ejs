@@ -1,13 +1,18 @@
 <div class="wrapper-filter-detail-film">
   <div class="filter-detail-film"></div>
   <div class="scroll-detail-film">
-    <div class="block-detail-film">
-      <div class="video-detail-film">
+    <div class="loadingClassFilter h-full w-full grid place-content-center">
+      <img src="/images/btn-loading.svg" alt="loading" class="w-20 h-20" />
+    </div>
+    <div class="block-detail-film hidden">
+      <div
+        class="embed-responsive embed-responsive-16by9 relative w-full overflow-hidden"
+        style="padding-top: 56.25%"
+      >
         <iframe
-          src=""
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
+          class="embed-responsive-item absolute top-0 right-0 bottom-0 left-0 h-full w-full"
+          allow="autoplay;"
+          id="sourceMovie"
         ></iframe>
       </div>
       <div class="content-detail-film">

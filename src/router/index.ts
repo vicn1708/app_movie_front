@@ -7,7 +7,7 @@ const router = express.Router();
 
 export default (): express.Router => {
   authRoute(router);
-  browserRoute(router);
   adminRoute(router);
+  browserRoute(router);
   return router;
 };

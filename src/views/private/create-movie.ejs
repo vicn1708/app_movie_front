@@ -23,7 +23,7 @@
               value="<%= category.name %>"
               class="form-checkbox h-5 w-5 text-purple-600 transition duration-150 ease-in-out"
             />
-            <span class="ml-2 text-red-500"><%= category.name %></span>
+            <span class="ml-2 text-white"><%= category.name %></span>
           </label>
           <% }) %>
         </div>
@@ -80,10 +80,11 @@
         <div class="my__form-group">
           <label for="">Trailer</label>
           <input
-            type="text"
+            type="file"
             placeholder="Nhập đường dẫn trailer ..."
             class="my-form-control"
             name="trailer"
+            accept="video/*"
             id="trailer"
             required
           />
@@ -109,6 +110,7 @@
           <img class="poster_review" src="/images/poster.png " alt="" />
           <input
             type="file"
+            accept="image/*"
             class="form-control-file"
             name="poster"
             id="poster_img"
@@ -126,6 +128,7 @@
           <img class="banner_review" src="/images/picture.png " alt="" />
           <input
             type="file"
+            accept="image/*"
             class="form-control-file"
             name="banner"
             id="banner_img"

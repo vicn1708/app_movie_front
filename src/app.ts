@@ -6,6 +6,9 @@ const app = express();
 const port = 5000;
 import path from "path";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+
+app.use(cookieParser());
 
 //* parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

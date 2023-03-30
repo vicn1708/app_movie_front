@@ -164,19 +164,22 @@
               </div>
               <div class="tab-item">
                 <div class="tab_trailer_film over_hidden">
-                  <iframe
+                  <video class="w-full shadow-lg" controls>
+                    <source src="<%= movie.video.trailer %>" type="video/mp4" />
+                  </video>
+                  <!-- <iframe
                     width="100%"
                     height="550"
-                    src="<%= movie.video.trailer %>"
+                    src=""
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen
-                  ></iframe>
+                  ></iframe> -->
                 </div>
               </div>
               <div class="tab-item">
                 <div class="tab_film_video over_hidden flex_center">
-                  <%- include ("./update-movie.ejs") %>
+                  <%- include ("./update-movie.ejs", {movie}) %>
                   <!-- <video width="320" height="240" controls>
                       <source src="https://youtu.be/V1QlfXrT5uE?list=RD-CPFM0oVYtk" />
                       Your browser does not support the video tag.
@@ -198,5 +201,4 @@
     </div>
   </body>
   <script src="/handle/main.js"></script>
-  <script src="/handle/detailFilm.js"></script>
 </html>
