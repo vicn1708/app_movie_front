@@ -8,12 +8,20 @@
     <%- include('../components/Loading') %>
 
     <!-- Header -->
-    <%- include('./components/Header') %>
+    <%- include('./components/Header', {main}) %>
     <div class="h-[20vh]"></div>
 
     <!-- List slide -->
-    <div class="h-[100vh] w-full">
+    <div class="h-[60vh] w-full">
+      <% if (movies.length > 0) { %>
+      <!--  -->
       <%- include("./components/Slide", {title: "Danh sách của tôi", movies}) %>
+      <!--  -->
+      <% } else {%>
+      <!--  -->
+      <h2 class="text-white ml-16">Chưa có danh sách yêu thích</h2>
+      <!--  -->
+      <% } %>
     </div>
 
     <!-- Detail film -->

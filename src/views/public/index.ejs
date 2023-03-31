@@ -17,23 +17,25 @@
       <span class="title-select-browser">Ai đang xem ?</span>
       <div class="listUser">
         <% users.forEach(user => { %>
-        <form action="/browser" class="userCard" method="get">
-          <input type="submit" hidden />
+        <div class="userCard" data-user="<%= user._id %>">
           <div class="imgUserCard">
-            <img src="<%= user.avatar %>" alt="<%= user.username %>" />
+            <img src="<%= user.avatar != "" ? user.avatar : "/images/meomeo.jpg"
+            %>" alt="<%= user.username %>" />
           </div>
           <div class="nameUserCard">
             <span><%= user.username %></span>
           </div>
-        </form>
+        </div>
         <% }) %>
       </div>
     </div>
   </body>
   <script>
-    document.querySelectorAll(".imgUserCard").forEach((item) => {
+    document.querySelectorAll(".userCard").forEach((item) => {
       item.onclick = () => {
-        item.parentElement.submit();
+        const idUser = item.getAttribute("data-user");
+        document.cookie = `main=${idUser}`;
+        location.href = "/browser";
       };
     });
   </script>

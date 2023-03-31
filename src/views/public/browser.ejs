@@ -8,7 +8,7 @@
     <%- include('../components/Loading') %>
 
     <!-- Header -->
-    <%- include('./components/Header', {users}) %>
+    <%- include('./components/Header', {main}) %>
 
     <!-- Banner -->
     <%- include("./components/Banner", {movieBanner}) %>
@@ -22,7 +22,7 @@
     <% }) %>
 
     <!-- Detail film -->
-    <%- include("./components/DetailClass") %>
+    <%- include("./components/DetailClass", { icon }) %>
 
     <!-- Footer -->
     <%- include("./components/Footer") %>

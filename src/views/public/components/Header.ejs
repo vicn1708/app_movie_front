@@ -20,23 +20,20 @@
       <a href="#"><i class="fa-regular fa-bell"></i></a>
     </div>
     <div class="avatar-user-browser">
-      <img
-        src="https://i.pinimg.com/236x/60/76/bb/6076bb61f1dae23ef08b68c123268cb6.jpg"
-        alt="avatar"
-      />
+      <img src="<%= main.avatar != "" ? main.avatar : "/images/meomeo.jpg" %>"
+      alt="avatar" />
       <ul class="user-option-dropdown">
-        <li class="changeUser">
-          <form action="./changeUser" method="post">
-            <input type="text" hidden name="ur_avatar" value="<%=
-            "element.ur_avatar" %>" /> <input type="text" hidden name="ur_name"
-            value="<%= "element.ur_name" %>" />
+        <% main.users.forEach((user) => { %>
+        <li class="changeUser" data-id="<%= user._id %>">
+          <form>
             <div class="img-otherUser">
-              <img src="<%= "element.ur_avatar" %>" alt="<%= "element.ur_name"
-              %>" />
+              <img src="<%= user.avatar != "" ? user.avatar :
+              "/images/meomeo.jpg" %>" alt="<%= "element.ur_name" %>" />
             </div>
-            <span><%= "element.ur_name" %></span>
+            <span><%= user.username %></span>
           </form>
         </li>
+        <% }) %>
         <li>
           <a href="/profile"><i class="fa-regular fa-user"></i>Profile</a>
         </li>
@@ -58,5 +55,15 @@
     } else {
       header.classList.remove("scrollHeader");
     }
+  });
+
+  document.querySelectorAll(".changeUser").forEach((user) => {
+    user.addEventListener("click", (e) => {
+      const userId = user.getAttribute("data-id");
+
+      document.cookie = `main=${userId}`;
+
+      location.reload();
+    });
   });
 </script>

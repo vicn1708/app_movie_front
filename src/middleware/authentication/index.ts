@@ -60,6 +60,7 @@ export const checkAuth = async (
   if (!(await getUser(refresh_token))) {
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
+    res.clearCookie("main");
 
     return res.redirect("/login");
   }
@@ -129,4 +130,76 @@ export const checkUser = async (
   }
 
   return res.redirect("/");
+};
+
+//* Check xem đã chọn người dùng chính chưa, nếu chưa thì quay lại trang chọn người dùng
+export const checkMainUser = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.cookies.accessToken;
+  const mainId = req.cookies.main;
+
+  if (!mainId) return res.redirect("/");
+
+  const main: any = await fetch(
+    `${process.env.DOMAIN_API}/auth/main-users-account/${mainId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    }
+  )
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((data) => {
+      if (data.message) {
+        res.clearCookie("main");
+        return res.redirect("/");
+      }
+
+      return data;
+    });
+
+  req.main = main;
+
+  return next();
+};
+
+export const checkIsMainUserIndex = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.cookies.accessToken;
+  const mainId = req.cookies.main;
+
+  if (!mainId) return next();
+
+  await fetch(`${process.env.DOMAIN_API}/auth/main-users-account/${mainId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((data) => {
+      if (data.message) {
+        res.clearCookie("main");
+        return next();
+      }
+
+      return res.redirect("/browser");
+    });
 };
