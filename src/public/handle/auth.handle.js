@@ -52,8 +52,8 @@ var fetchPostOption = function (data) {
         headers: {
             "Content-Type": "application/json"
         },
-        mode: "cors",
-        keepalive: true,
+        // mode: "cors",
+        // keepalive: true,
         body: JSON.stringify(data)
     };
 };
@@ -68,20 +68,20 @@ toggleLogin.addEventListener("click", function () {
     var btnLogin = document.querySelector("#btnLogin");
     var textToggleLogin = document.querySelector("#textToggleLogin");
     if (toggleForm == "register") {
-        document.title = "Sign up";
+        document.title = "Đăng ký";
         inputUsername.parentElement.style.display = "block";
-        titleLogin.innerHTML = "Sign up";
-        btnLogin.innerHTML = "Register";
-        textToggleLogin.innerHTML = "Already have an account?";
-        toggleLogin.innerHTML = "Login";
+        titleLogin.innerHTML = "Đăng ký";
+        btnLogin.innerHTML = "Đăng ký";
+        textToggleLogin.innerHTML = "Bạn đã có tài khoản?";
+        toggleLogin.innerHTML = "Đăng nhập";
     }
     else {
-        document.title = "Sign in";
+        document.title = "Đăng nhập";
         inputUsername.parentElement.style.display = "none";
-        titleLogin.innerHTML = "Sign in";
-        btnLogin.innerHTML = "Login";
-        textToggleLogin.innerHTML = "Fisrt time using Neflix";
-        toggleLogin.innerHTML = "Create an account";
+        titleLogin.innerHTML = "Đăng nhập";
+        btnLogin.innerHTML = "Đăng nhập";
+        textToggleLogin.innerHTML = "Lần đầu bạn vào Neflix?";
+        toggleLogin.innerHTML = "Tạo tài khoản mới";
     }
 });
 //* Submit form
@@ -138,13 +138,14 @@ btnLogin.addEventListener("click", function () { return __awaiter(_this, void 0,
                         if (data.status) {
                             return console.log(data);
                         }
+                        console.log(data);
                         var accessToken = data.access_token;
                         var refreshToken = data.refresh_token;
                         var setTime1h = new Date(new Date().getTime() + 60 * 60 * 1000).toUTCString();
                         var setTime30d = new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000).toUTCString();
                         document.cookie = "accessToken=".concat(accessToken, "; expires=").concat(setTime1h);
                         document.cookie = "refreshToken=".concat(refreshToken, "; expires=").concat(setTime30d);
-                        location.reload();
+                        location.href = "/";
                     })["catch"](function (error) {
                         console.error("Error:", error);
                     })];

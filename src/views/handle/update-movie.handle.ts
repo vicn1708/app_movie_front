@@ -1,23 +1,23 @@
-const mountAlert = (id: string) => {
+const mountAlert = () => {
   const alert = document.querySelector("#alert") as HTMLDivElement;
   if (alert.style.display === "block") {
     setTimeout(() => {
       alert.style.animation = "unMountAlert 0.75s forwards";
       setTimeout(() => {
         alert.style.display = "none";
-        location.href = `/admin/movie/detail/${id}`;
+        location.reload();
       }, 1000);
     }, 3000);
   }
 };
 
-type DataCreateMovie = {
-  title: string;
-  categories: string[];
-  casts: string[];
-  characters: string[];
-  genres: string[];
-  description: string;
+type DataUpdateMovie = {
+  title?: string;
+  categories?: string[];
+  casts?: string[];
+  characters?: string[];
+  genres?: string[];
+  description?: string;
 };
 
 const formCreateMovie = document.querySelector(
@@ -29,6 +29,7 @@ formCreateMovie.addEventListener("submit", async (e: Event) => {
   const category = document.getElementsByName(
     "category"
   ) as NodeListOf<HTMLInputElement>;
+  const movie = document.querySelector("#idMovie") as HTMLInputElement;
   const title = document.querySelector("#title") as HTMLInputElement;
   const cast = document.querySelector("#cast") as HTMLInputElement;
   const character = document.querySelector("#character") as HTMLInputElement;
@@ -42,6 +43,7 @@ formCreateMovie.addEventListener("submit", async (e: Event) => {
 
   const categoryValue: string[] = [];
   category.forEach((item) => item.checked && categoryValue.push(item.value));
+  const movieId: string = movie.value;
   const titleValue: string = title.value;
   const castValue: string = cast.value;
   const characterValue: string = character.value;
@@ -52,66 +54,66 @@ formCreateMovie.addEventListener("submit", async (e: Event) => {
   const bannerValue: File = banner.files[0];
 
   if (
-    posterValue == undefined ||
-    bannerValue == undefined ||
-    trailerValue == undefined
-  ) {
-    return alert("file missing");
-  }
+    !titleValue &&
+    !castValue &&
+    !characterValue &&
+    !genreValue &&
+    !descriptionValue &&
+    !trailerValue &&
+    !posterValue &&
+    !bannerValue
+  )
+    return alert("Không có dữ liệu để cập nhật");
 
+  const data: DataUpdateMovie = {};
+
+  if (titleValue && titleValue != "") data.title = titleValue;
+  if (descriptionValue && descriptionValue != "")
+    data.description = descriptionValue;
+  if (categoryValue && categoryValue.length > 0)
+    data.categories = categoryValue;
+  if (castValue && castValue.split(",").map((item) => item.trim()).length > 0)
+    data.casts = castValue.split(",").map((item) => item.trim());
   if (
-    categoryValue.length < 1 ||
-    titleValue == "" ||
-    castValue == "" ||
-    characterValue == "" ||
-    genreValue == "" ||
-    descriptionValue == ""
-  ) {
-    return alert("field missing");
-  }
+    characterValue &&
+    characterValue.split(",").map((item) => item.trim()).length > 0
+  )
+    data.characters = characterValue.split(",").map((item) => item.trim());
+  if (genreValue && genreValue.split(",").map((item) => item.trim()).length > 0)
+    data.genres = genreValue.split(",").map((item) => item.trim());
 
-  const data: DataCreateMovie = {
-    title: titleValue,
-    categories: categoryValue,
-    casts: castValue.split(",").map((item) => item.trim()),
-    characters: characterValue.split(",").map((item) => item.trim()),
-    genres: genreValue.split(",").map((item) => item.trim()),
-    description: descriptionValue,
-  };
+  const formData = new FormData();
 
-  const formDate = new FormData();
+  if (Object.keys(data).length > 0)
+    formData.append("data", JSON.stringify(data));
 
-  formDate.append("data", JSON.stringify(data));
-
-  formDate.append("trailer", trailerValue);
-  formDate.append("poster", posterValue);
-  formDate.append("banner", bannerValue);
+  trailerValue && formData.append("trailer", trailerValue);
+  posterValue && formData.append("poster", posterValue);
+  bannerValue && formData.append("banner", bannerValue);
 
   const btnCreateMovie = document.querySelector(
     "#btn-create-movie"
   ) as HTMLButtonElement;
   btnCreateMovie.innerHTML = `<img src="/images/btn-loading.svg" alt="btn-loading" class="w-max m-auto"/>`;
 
-  await fetch("http://localhost:3000/movies", {
-    method: "POST",
+  await fetch(`http://localhost:3000/movies/${movieId}`, {
+    method: "PUT",
     mode: "cors",
-    body: formDate,
+    body: formData,
   })
-    .then((res: Response) => {
-      if (res.ok) {
+    .then((res: Response) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.message) {
+        btnCreateMovie.innerHTML = "Hoàn tất";
+        console.log("not handle");
+      } else {
         console.log("Image uploaded successfully");
         btnCreateMovie.innerHTML = "Hoàn tất";
         const alert = document.querySelector("#alert") as HTMLDivElement;
         alert.style.display = "block";
-        return res.json();
-      } else {
-        btnCreateMovie.innerHTML = "Hoàn tất";
-        console.log("not handle");
-        return res.json();
+        mountAlert();
       }
-    })
-    .then((data) => {
-      mountAlert(data.movie._id);
     })
     .catch((error) => {
       console.error("Error uploading image:", error);

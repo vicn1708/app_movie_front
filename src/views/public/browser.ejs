@@ -16,8 +16,12 @@
     <!-- Slide -->
     <% moviesByCategory.forEach(item => { %>
     <!--  -->
+    <% if (item.movies.length > 0) { %>
+    <!--  -->
     <%- include("./components/Slide", {title: item.category, movies:
     item.movies}) %>
+    <!--  -->
+    <% } %>
     <!--  -->
     <% }) %>
 

@@ -179,7 +179,9 @@
               </div>
               <div class="tab-item">
                 <div class="tab_film_video over_hidden flex_center">
-                  <%- include ("./update-movie.ejs", {movie}) %>
+                  <%- include ("../components/Alert") %>
+                  <!--  -->
+                  <%- include("./update-movie.ejs", {movie, categories}) %>
                   <!-- <video width="320" height="240" controls>
                       <source src="https://youtu.be/V1QlfXrT5uE?list=RD-CPFM0oVYtk" />
                       Your browser does not support the video tag.

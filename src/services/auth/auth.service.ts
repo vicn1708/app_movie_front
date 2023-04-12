@@ -10,11 +10,11 @@ export const AuthService = {
     };
     const username: InputProps = {
       id: "username",
-      title: "Username",
+      title: "Tên tài khoản",
     };
     const password: InputProps = {
       id: "password",
-      title: "Password",
+      title: "Mật khẩu",
       type: "password",
     };
 

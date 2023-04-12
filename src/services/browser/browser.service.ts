@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Request, Response } from "express";
 import fetch from "node-fetch";
 
@@ -29,6 +30,20 @@ export const BrowserService = {
     const token = req.cookies.accessToken;
     const main = req.main;
 
+    // const moviesTopViews = (
+    //   await axios.get(`${process.env.DOMAIN_API}/movies/movies-top-views/10`)
+    // ).data;
+
+    // const topViews = {
+    //   category: "Phim xem nhiều",
+    //   movies: moviesTopViews.map((movie: any) => ({
+    //     _id: movie._id,
+    //     title: movie.title,
+    //     poster: movie.poster[0].uri,
+    //     banner: movie.banner[0].uri,
+    //   })),
+    // };
+
     const moviesByCategory: any[] = await fetch(
       `${process.env.DOMAIN_API}/movies/movies-by-category`
     )
@@ -55,6 +70,10 @@ export const BrowserService = {
       Math.random() * moviesByCategory[0].movies.length
     );
 
+    const phimDeCu = moviesByCategory.find(
+      (element) => element.category === "Phim đề cử"
+    );
+
     const icon = {
       userId: main,
       key: "add",
@@ -64,8 +83,8 @@ export const BrowserService = {
 
     return res.render("public/browser", {
       main,
-      moviesByCategory,
-      movieBanner: moviesByCategory[0].movies[randomMovie],
+      moviesByCategory: moviesByCategory,
+      movieBanner: phimDeCu.movies[randomMovie],
       icon,
     });
   },
@@ -92,5 +111,9 @@ export const BrowserService = {
     };
 
     return res.render("public/list-favorite", { main, movies, icon });
+  },
+
+  async profilePage(req: any, res: Response) {
+    return res.render("public/profile");
   },
 };

@@ -1,11 +1,14 @@
 const video = document.querySelector("#sourceMovie");
 
+let MovieId = null;
+
 const getDetailFilm = async (img) => {
   document.querySelector(".wrapper-filter-detail-film").style.visibility =
     "visible";
   document.querySelector(".wrapper-filter-detail-film").style.opacity = 1;
 
   const movieId = img.getAttribute("data-id");
+  MovieId = movieId;
   const banner = img.getAttribute("data-banner");
 
   await fetch(`http://localhost:3000/movies/detail/${movieId}`)
@@ -69,7 +72,7 @@ const addAndRemoveFavorite = async (a) => {
 
 const btnPlayVideo = document.querySelector("#btnPlayVideo");
 
-btnPlayVideo.addEventListener("click", (e) => {
+btnPlayVideo.addEventListener("click", async (e) => {
   if (video.requestFullscreen) {
     video.requestFullscreen();
   } else if (video.webkitRequestFullScreen) {
@@ -79,6 +82,12 @@ btnPlayVideo.addEventListener("click", (e) => {
   } else if (video.msRequestFullscreen) {
     video.msRequestFullscreen();
   }
+
+  console.log(MovieId);
+
+  await fetch(`http://localhost:3000/rating/views/${MovieId}`)
+    .then((res) => res.json())
+    .then((data) => console.log(data));
 });
 
 document.addEventListener("keydown", (event) => {

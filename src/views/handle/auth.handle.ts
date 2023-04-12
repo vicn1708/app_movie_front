@@ -32,19 +32,19 @@ toggleLogin.addEventListener("click", () => {
   const textToggleLogin = document.querySelector("#textToggleLogin");
 
   if (toggleForm == "register") {
-    document.title = "Sign up";
+    document.title = "Đăng ký";
     inputUsername.parentElement.style.display = "block";
-    titleLogin.innerHTML = "Sign up";
-    btnLogin.innerHTML = "Register";
-    textToggleLogin.innerHTML = "Already have an account?";
-    toggleLogin.innerHTML = "Login";
+    titleLogin.innerHTML = "Đăng ký";
+    btnLogin.innerHTML = "Đăng ký";
+    textToggleLogin.innerHTML = "Bạn đã có tài khoản?";
+    toggleLogin.innerHTML = "Đăng nhập";
   } else {
-    document.title = "Sign in";
+    document.title = "Đăng nhập";
     inputUsername.parentElement.style.display = "none";
-    titleLogin.innerHTML = "Sign in";
-    btnLogin.innerHTML = "Login";
-    textToggleLogin.innerHTML = "Fisrt time using Neflix";
-    toggleLogin.innerHTML = "Create an account";
+    titleLogin.innerHTML = "Đăng nhập";
+    btnLogin.innerHTML = "Đăng nhập";
+    textToggleLogin.innerHTML = "Lần đầu bạn vào Neflix?";
+    toggleLogin.innerHTML = "Tạo tài khoản mới";
   }
 });
 
@@ -122,6 +122,8 @@ btnLogin.addEventListener("click", async () => {
           return console.log(data);
         }
 
+        console.log(data);
+
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
 
@@ -135,7 +137,7 @@ btnLogin.addEventListener("click", async () => {
         document.cookie = `accessToken=${accessToken}; expires=${setTime1h}`;
         document.cookie = `refreshToken=${refreshToken}; expires=${setTime30d}`;
 
-        location.reload();
+        location.href = "/";
       })
       .catch((error) => {
         console.error("Error:", error);

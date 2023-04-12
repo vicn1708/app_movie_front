@@ -1,0 +1,64 @@
+<div class="main__content">
+  <div class="main__content_head flex_center">
+    <a href="./movies" class="add_content"
+      ><i class="bi bi-arrow-left-circle"></i> <span>Quay Lại</span></a
+    >
+  </div>
+  <div class="main__content_body">
+    <form
+      id="my__form_film"
+      class="form-create-category"
+      enctype="multipart/form-data"
+    >
+      <h1 class="title_form">Thêm danh mục mới</h1>
+      <div class="">
+        <label for="cate">Danh mục</label>
+        <div class="flex gap-4 my-4">
+          <label class="flex items-center">
+            <input
+              type="radio"
+              name="status"
+              value="ACTIVE"
+              class="form-checkbox h-5 w-5 text-purple-600 transition duration-150 ease-in-out"
+            />
+            <span class="ml-2 text-white">Hoạt động</span>
+          </label>
+          <label class="flex items-center">
+            <input
+              type="radio"
+              name="status"
+              value="INACTIVE"
+              class="form-checkbox h-5 w-5 text-purple-600 transition duration-150 ease-in-out"
+            />
+            <span class="ml-2 text-white">Không hoạt động</span>
+          </label>
+        </div>
+      </div>
+      <div class="group-1-2">
+        <div class="my__form-group">
+          <label for="">Tên danh mục</label>
+          <input
+            type="text"
+            placeholder="Nhập tên danh mục ..."
+            class="my-form-control"
+            name="name"
+            id="name"
+            required
+          />
+        </div>
+      </div>
+      <div class="btn_submit_form-data">
+        <button
+          type="submit"
+          id="btn-create-category"
+          class="flex justify-center items-center"
+        >
+          Hoàn tất
+        </button>
+      </div>
+      <div class="line"></div>
+    </form>
+  </div>
+</div>
+<script src="/handle/create-category.handle.js"></script>
+<!-- <script src="/handle/review.js"></script> -->

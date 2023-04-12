@@ -69,11 +69,13 @@ export const checkAuth = async (
     token = await getAccessToken(refresh_token);
 
     res.cookie("accessToken", token, {
-      expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000),
+      expires: new Date(new Date().getTime() + 60 * 10),
     });
 
     return res.redirect("/");
   }
+
+  const verifyRefreshToken = await getUser(refresh_token);
 
   let user = await getUser(token);
 
@@ -97,6 +99,11 @@ export const checkAuth = async (
     });
 
     user = await getUser(token);
+  }
+
+  if (verifyRefreshToken.data.accountId != user.data.accountId) {
+    res.clearCookie("refreshToken");
+    return res.redirect("/login");
   }
 
   req.user = user;
@@ -172,6 +179,7 @@ export const checkMainUser = async (
   return next();
 };
 
+//* Check đã tồn tại người dùng chính thì không quay lại trang chọn người dùng nữa
 export const checkIsMainUserIndex = async (
   req: Request,
   res: Response,

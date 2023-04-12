@@ -15,10 +15,13 @@ export default (router: express.Router) => {
     checkMainUser,
     BrowserController.browserPage
   );
+
   router.get(
     "/favorite",
     checkAuth,
     checkMainUser,
     BrowserController.favoritePage
   );
+
+  router.get("/profile", BrowserController.profilePage);
 };

@@ -58,6 +58,11 @@ export const AdminService = {
           categories,
         });
 
+      case "create-category":
+        page = "../private/create-category";
+
+        return res.render("private/index", { page });
+
       default:
         page = null;
         break;
@@ -68,6 +73,15 @@ export const AdminService = {
 
   async detailMoviePage(req: Request, res: Response) {
     const movieId = req.params.id;
+
+    const categories = await fetch(`${process.env.DOMAIN_API}/categories`)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => data)
+      .catch((err) => console.log(err));
 
     const movie = await fetch(
       `${process.env.DOMAIN_API}/movies/detail/${movieId}`
@@ -80,6 +94,6 @@ export const AdminService = {
       .then((data) => data)
       .catch((err) => console.log(err));
 
-    return res.render("private/detail-movie", { movie });
+    return res.render("private/detail-movie", { movie, categories });
   },
 };

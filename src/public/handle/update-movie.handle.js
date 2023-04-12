@@ -35,26 +35,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-var mountAlert = function (id) {
+var mountAlert = function () {
     var alert = document.querySelector("#alert");
     if (alert.style.display === "block") {
         setTimeout(function () {
             alert.style.animation = "unMountAlert 0.75s forwards";
             setTimeout(function () {
                 alert.style.display = "none";
-                location.href = "/admin/movie/detail/".concat(id);
+                location.reload();
             }, 1000);
         }, 3000);
     }
 };
 var formCreateMovie = document.querySelector("#my__form_film");
 formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this, void 0, void 0, function () {
-    var category, title, cast, character, genre, description, trailer, poster, banner, categoryValue, titleValue, castValue, characterValue, genreValue, descriptionValue, trailerValue, posterValue, bannerValue, data, formDate, btnCreateMovie;
+    var category, movie, title, cast, character, genre, description, trailer, poster, banner, categoryValue, movieId, titleValue, castValue, characterValue, genreValue, descriptionValue, trailerValue, posterValue, bannerValue, data, formData, btnCreateMovie;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 e.preventDefault();
                 category = document.getElementsByName("category");
+                movie = document.querySelector("#idMovie");
                 title = document.querySelector("#title");
                 cast = document.querySelector("#cast");
                 character = document.querySelector("#character");
@@ -65,6 +66,7 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                 banner = document.querySelector("#banner_img");
                 categoryValue = [];
                 category.forEach(function (item) { return item.checked && categoryValue.push(item.value); });
+                movieId = movie.value;
                 titleValue = title.value;
                 castValue = cast.value;
                 characterValue = character.value;
@@ -73,55 +75,56 @@ formCreateMovie.addEventListener("submit", function (e) { return __awaiter(_this
                 trailerValue = trailer.files[0];
                 posterValue = poster.files[0];
                 bannerValue = banner.files[0];
-                if (posterValue == undefined ||
-                    bannerValue == undefined ||
-                    trailerValue == undefined) {
-                    return [2 /*return*/, alert("file missing")];
-                }
-                if (categoryValue.length < 1 ||
-                    titleValue == "" ||
-                    castValue == "" ||
-                    characterValue == "" ||
-                    genreValue == "" ||
-                    descriptionValue == "") {
-                    return [2 /*return*/, alert("field missing")];
-                }
-                data = {
-                    title: titleValue,
-                    categories: categoryValue,
-                    casts: castValue.split(",").map(function (item) { return item.trim(); }),
-                    characters: characterValue.split(",").map(function (item) { return item.trim(); }),
-                    genres: genreValue.split(",").map(function (item) { return item.trim(); }),
-                    description: descriptionValue
-                };
-                formDate = new FormData();
-                formDate.append("data", JSON.stringify(data));
-                formDate.append("trailer", trailerValue);
-                formDate.append("poster", posterValue);
-                formDate.append("banner", bannerValue);
+                if (!titleValue &&
+                    !castValue &&
+                    !characterValue &&
+                    !genreValue &&
+                    !descriptionValue &&
+                    !trailerValue &&
+                    !posterValue &&
+                    !bannerValue)
+                    return [2 /*return*/, alert("Không có dữ liệu để cập nhật")];
+                data = {};
+                if (titleValue && titleValue != "")
+                    data.title = titleValue;
+                if (descriptionValue && descriptionValue != "")
+                    data.description = descriptionValue;
+                if (categoryValue && categoryValue.length > 0)
+                    data.categories = categoryValue;
+                if (castValue && castValue.split(",").map(function (item) { return item.trim(); }).length > 0)
+                    data.casts = castValue.split(",").map(function (item) { return item.trim(); });
+                if (characterValue &&
+                    characterValue.split(",").map(function (item) { return item.trim(); }).length > 0)
+                    data.characters = characterValue.split(",").map(function (item) { return item.trim(); });
+                if (genreValue && genreValue.split(",").map(function (item) { return item.trim(); }).length > 0)
+                    data.genres = genreValue.split(",").map(function (item) { return item.trim(); });
+                formData = new FormData();
+                if (Object.keys(data).length > 0)
+                    formData.append("data", JSON.stringify(data));
+                trailerValue && formData.append("trailer", trailerValue);
+                posterValue && formData.append("poster", posterValue);
+                bannerValue && formData.append("banner", bannerValue);
                 btnCreateMovie = document.querySelector("#btn-create-movie");
                 btnCreateMovie.innerHTML = "<img src=\"/images/btn-loading.svg\" alt=\"btn-loading\" class=\"w-max m-auto\"/>";
-                return [4 /*yield*/, fetch("http://localhost:3000/movies", {
-                        method: "POST",
+                return [4 /*yield*/, fetch("http://localhost:3000/movies/".concat(movieId), {
+                        method: "PUT",
                         mode: "cors",
-                        body: formDate
+                        body: formData
                     })
-                        .then(function (res) {
-                        if (res.ok) {
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                        console.log(data);
+                        if (data.message) {
+                            btnCreateMovie.innerHTML = "Hoàn tất";
+                            console.log("not handle");
+                        }
+                        else {
                             console.log("Image uploaded successfully");
                             btnCreateMovie.innerHTML = "Hoàn tất";
                             var alert_1 = document.querySelector("#alert");
                             alert_1.style.display = "block";
-                            return res.json();
+                            mountAlert();
                         }
-                        else {
-                            btnCreateMovie.innerHTML = "Hoàn tất";
-                            console.log("not handle");
-                            return res.json();
-                        }
-                    })
-                        .then(function (data) {
-                        mountAlert(data.movie._id);
                     })["catch"](function (error) {
                         console.error("Error uploading image:", error);
                     })];
